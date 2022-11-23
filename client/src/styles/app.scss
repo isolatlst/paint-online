@@ -1,0 +1,13 @@
+@import "reset";
+@import "variables";
+
+.app {
+  display: grid;
+  grid-template-rows: 40px 40px 1fr;
+  gap: 10px;
+  padding: 10px;
+  width: 100vw;
+  height: 100vh;
+  max-height: 100vh;
+  background: $bg-color;
+}

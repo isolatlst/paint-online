@@ -1,0 +1,65 @@
+@import "variables";
+
+
+.toolbar, .settingsbar {
+  display: flex;
+  align-items: center;
+  width: auto;
+  height: $toolbar-height;
+  background: #fff;
+  box-shadow: 0 2px 5px gray;
+}
+
+.toolbar {
+  margin-bottom: 5px;
+
+  &__btn{
+    width: 25px;
+    height: 25px;
+    margin: 0 5px;
+    cursor: pointer;
+    background-size: cover;
+    background: #fff;
+  }
+  .pencil{
+    width: 35px;
+    height: 35px;
+    margin-right: 0;
+    transform: rotate(45deg);
+    background: url('../assets/pencil.svg');
+  }
+  .rect{
+    border: 2px solid #000;
+  }
+  .circle{
+    border: 2px solid #000;
+    border-radius: 50%;
+  }
+  .eraser{
+    background: url('../assets/eraser.svg');
+  }
+  .line span{
+    display: block;
+    height: 2px;
+    background: #000;
+    transform: rotate(-45deg);
+  }
+  .palette{
+    background: url('../assets/palette.svg');
+    input{
+      width: 100%;
+      cursor: pointer;
+      opacity: 0;
+    }
+  }
+  .undo{
+    margin-left: auto;
+    background: url('../assets/undo.svg');
+  }
+  .redo{
+    background: url('../assets/redo.svg');
+  }
+  .save{
+    background: url('../assets/save.svg');
+  }
+}
