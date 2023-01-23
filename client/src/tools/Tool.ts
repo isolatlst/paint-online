@@ -1,6 +1,8 @@
 export default class Tool {
     canvas: HTMLCanvasElement
     ctx: any
+    socket = null as unknown as Object
+    sessionId: string = ''
 
     set strokeColor(color: string) {
         this.ctx.strokeStyle = color
@@ -11,9 +13,13 @@ export default class Tool {
     }
 
 
-    constructor(canvas: HTMLCanvasElement) {
+    constructor(canvas: HTMLCanvasElement, socket: Object, sessionId: string) {
         this.canvas = canvas
         this.ctx = canvas.getContext('2d')
+
+        this.socket = socket
+        this.sessionId = sessionId
+
         this.destroyEvents()
         if (this.ctx.strokeStyle === '#ffffff') {
             this.ctx.strokeStyle = '#000000'

@@ -8,8 +8,8 @@ export default class Circle extends Tool {
     currentX: number = 0
     currentY: number = 0
 
-    constructor(canvas: HTMLCanvasElement) {
-        super(canvas);
+    constructor(canvas: HTMLCanvasElement, socket: Object, sessionId: string) {
+        super(canvas, socket, sessionId)
         this.listen()
     }
 

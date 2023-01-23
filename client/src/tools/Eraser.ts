@@ -2,8 +2,11 @@ import Pencil from "./Pencil";
 
 
 export default class Eraser extends Pencil {
-    constructor(canvas: HTMLCanvasElement) {
-        super(canvas);
+    socket: any
+    sessionId: any
+
+    constructor(canvas: HTMLCanvasElement, socket: Object, sessionId: string) {
+        super(canvas, socket, sessionId);
     }
 
     draw(x: number, y: number) {

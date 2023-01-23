@@ -1,40 +1,25 @@
 import Tool from "./Tool";
+import canvasState from "../store/canvasState";
 
 
 export default class Pencil extends Tool {
     mouseDown: boolean = false
 
-
-    constructor(canvas: HTMLCanvasElement) {
-        super(canvas);
+    constructor(canvas: HTMLCanvasElement, socket: Object, sessionId: string) {
+        super(canvas, socket, sessionId);
         this.listen()
     }
 
     listen() {
-        this.canvas.onmouseup = this.mouseUpHandler.bind(this)
-        this.canvas.onmousedown = this.mouseDownHandler.bind(this)
+        this.canvas.onmouseup = this.onUp.bind(this)
+        this.canvas.onmousedown = this.onDown.bind(this)
         this.canvas.onmousemove = this.mouseMoveHandler.bind(this)
 
-        this.canvas.ontouchend = this.touchEndHandler.bind(this)
-        this.canvas.ontouchstart = this.touchStartHandler.bind(this)
+        this.canvas.ontouchend = this.onUp.bind(this)
+        this.canvas.ontouchstart = this.onDown.bind(this)
         this.canvas.ontouchmove = this.touchMoveHandler.bind(this)
     }
 
-    touchEndHandler() {
-        this.mouseDown = false
-    }
-
-    mouseUpHandler() {
-        this.mouseDown = false
-    }
-
-    touchStartHandler(e: TouchEvent) {
-        this.onDown(e.touches[0].pageX - this.canvas.offsetLeft, e.touches[0].pageY - this.canvas.offsetTop)
-    }
-
-    mouseDownHandler(e: MouseEvent) {
-        this.onDown(e.pageX - this.canvas.offsetLeft, e.pageY - this.canvas.offsetTop)
-    }
 
     touchMoveHandler(e: TouchEvent) {
         this.onMove(e.touches[0].pageX - this.canvas.offsetLeft, e.touches[0].pageY - this.canvas.offsetTop)
@@ -44,19 +29,44 @@ export default class Pencil extends Tool {
         this.onMove(e.pageX - this.canvas.offsetLeft, e.pageY - this.canvas.offsetTop)
     }
 
-    draw(x: number, y: number) {
-        this.ctx.lineTo(x, y)
-        this.ctx.stroke()
+    static draw(ctx: any, x: number, y: number, color: string) {
+        const temp = ctx.strokeStyle
+        ctx.strokeStyle = color
+        ctx.lineTo(x, y)
+        ctx.stroke()
+        ctx.strokeStyle = temp
+    }
+
+    onUp() {
+        this.mouseDown = false
+        //@ts-ignore
+        canvasState.socket.send(JSON.stringify({
+            method: 'draw',
+            id: canvasState.sessionId,
+            figure: {
+                type: 'finish',
+            }
+        }))
     }
 
     onMove(x: number, y: number) {
         if (this.mouseDown) {
-            this.draw(x, y)
+            // @ts-ignore
+            canvasState.socket.send(JSON.stringify({
+                method: 'draw',
+                id: canvasState.sessionId,
+                figure: {
+                    type: 'pencil',
+                    x: x,
+                    y: y,
+                    color: this.ctx.strokeStyle
+                }
+            }))
         }
     }
-    onDown (x: number, y: number){
+
+    onDown() {
         this.mouseDown = true
         this.ctx.beginPath()
-        this.ctx.moveTo(x, y)
     }
 }

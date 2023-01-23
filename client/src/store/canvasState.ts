@@ -5,12 +5,29 @@ class CanvasState {
     undoList = [] as Array<string>
     redoList = [] as Array<string>
 
+    username: string = ''
+    socket = null as unknown as Object
+    sessionId: string = ''
+    serverURL: string = 'ws://192.168.0.132:3001/'
+
     constructor() {
         makeAutoObservable(this)
     }
 
     setCanvas(canvas: HTMLCanvasElement) {
         this.canvas = canvas
+    }
+
+    setUsername(username: string) {
+        this.username = username
+    }
+
+    setSocket(socket: Object) {
+        this.socket = socket
+    }
+
+    setSessionId(id: string ) {
+        this.sessionId = id
     }
 
     pushToUndo(data: string) {
